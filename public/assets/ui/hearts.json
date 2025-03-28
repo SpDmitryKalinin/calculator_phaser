@@ -1,0 +1,115 @@
+{
+	"frames": {
+		"hearts_1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 1001,
+				"h": 669
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1001,
+				"h": 669
+			},
+			"sourceSize": {
+				"w": 1001,
+				"h": 669
+			}
+		},
+		"hearts_2.png": {
+			"frame": {
+				"x": 1,
+				"y": 672,
+				"w": 1001,
+				"h": 669
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1001,
+				"h": 669
+			},
+			"sourceSize": {
+				"w": 1001,
+				"h": 669
+			}
+		},
+		"hearts_3.png": {
+			"frame": {
+				"x": 1004,
+				"y": 1,
+				"w": 1001,
+				"h": 669
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1001,
+				"h": 669
+			},
+			"sourceSize": {
+				"w": 1001,
+				"h": 669
+			}
+		},
+		"hearts_4.png": {
+			"frame": {
+				"x": 1004,
+				"y": 672,
+				"w": 1001,
+				"h": 669
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1001,
+				"h": 669
+			},
+			"sourceSize": {
+				"w": 1001,
+				"h": 669
+			}
+		},
+		"hearts_5.png": {
+			"frame": {
+				"x": 1,
+				"y": 1343,
+				"w": 1001,
+				"h": 669
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1001,
+				"h": 669
+			},
+			"sourceSize": {
+				"w": 1001,
+				"h": 669
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 2006,
+			"h": 2013
+		},
+		"scale": "1"
+	}
+}
