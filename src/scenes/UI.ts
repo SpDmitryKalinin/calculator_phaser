@@ -151,7 +151,7 @@ export class UI extends Phaser.Scene {
 
     private addListeners() {
         EventBus.on(EVENTS.scoreChange, (points: number) => {
-            this.score += points;
+            this.score += Math.floor(points);
             this.counter.setText(`${this.score}`);
             EventBus.emit(EVENTS.scoreChanged, this.score);
         });

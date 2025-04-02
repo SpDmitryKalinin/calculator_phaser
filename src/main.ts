@@ -8,6 +8,7 @@ import { MainMenu } from './scenes/MainMenu';
 import { Preloader } from './scenes/Preloader';
 import { UI } from './scenes/UI';
 import './component/LocalizedText';
+import './component/LocalizedBitmap';
 
 import { Game, Types } from "phaser";
 //  Find out more information about the Game Config at:

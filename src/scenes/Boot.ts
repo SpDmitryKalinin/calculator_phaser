@@ -13,8 +13,9 @@ export class Boot extends Scene
         const usedAssets: AssetKey[] = [
             'background',
             'tempbg',
+            'chalkFont'
+            
         ];
-
         loadAssets(this, usedAssets)
     }
 

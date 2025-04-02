@@ -10,7 +10,7 @@ export class BackgroundScene extends Scene {
     }
 
     create() {
-        // Создаем adptiveDisplay для отслеживания размеров
+        // Создаем adaptiveDisplay для отслеживания размеров
         this.adaptiveDisplay = new AdaptiveDisplay({
             designWidth: 360,
             designHeight: 800,
@@ -18,69 +18,73 @@ export class BackgroundScene extends Scene {
             debug: false
         });
         
-        
         // Добавляем фоновое изображение
         this.background = this.add.image(0, 0, 'background')
-            .setOrigin(0.5) // Меняем origin на центр для правильного масштабирования cover
+            .setOrigin(0.5) // Центральная точка для растягивания
             .setDepth(-3);
-
-            
         
         // Размещаем фон по центру
-        this.background.setPosition(
-            this.scale.width / 2,
-            this.scale.height / 2
-        );
+        this.centerBackground();
         
-        // Применяем эффект cover
-        this.applyBackgroundCover();
+        // Применяем эффект cover для заполнения всего экрана
+        this.applyFullScreenCover();
         
         // Слушаем событие изменения размера
         this.scale.on('resize', this.onResize, this);
     }
 
-    private applyBackgroundCover(): void {
+    /**
+     * Центрирует фоновое изображение на экране
+     */
+    private centerBackground(): void {
+        this.background.setPosition(
+            this.scale.width / 2,
+            this.scale.height / 2
+        );
+    }
+
+    /**
+     * Растягивает фон на 100% ширины и высоты экрана
+     */
+    private applyFullScreenCover(): void {
         if (!this.background || !this.background.texture) return;
-        const screenWidth = this.scale.width + 20;
-        const screenHeight = this.scale.height + 20;
+        
+        // Получаем размеры экрана и изображения
+        const screenWidth = this.scale.width;
+        const screenHeight = this.scale.height;
         const imageWidth = this.background.width;
         const imageHeight = this.background.height;
-
-        const screenRatio = screenWidth / screenHeight;
-        const imageRatio = imageWidth / imageHeight;
         
-        let scale;
+        // Вычисляем масштаб по ширине и высоте независимо
+        const scaleX = screenWidth / imageWidth;
+        const scaleY = screenHeight / imageHeight;
         
-        if (screenRatio > imageRatio) {
-            scale = screenWidth / imageWidth;
-        } else {
-            scale = screenHeight / imageHeight;
-        }
-        
-        // Применяем масштаб к изображению
-        this.background.setScale(scale);
+        // Применяем масштаб к изображению без сохранения пропорций
+        this.background.setScale(scaleX, scaleY);
     }
     
     /**
      * Обработчик изменения размеров экрана
      */
     private onResize(gameSize: any): void {
-        // Обновляем позицию фона (по центру экрана)
+        // Обновляем позицию фона по центру
         this.background.setPosition(
             gameSize.width / 2,
             gameSize.height / 2
         );
         
-        // Применяем эффект cover
-        this.applyBackgroundCover();
+        // Пересчитываем масштаб для полного покрытия экрана
+        this.applyFullScreenCover();
     }
     
     /**
      * Очищаем ресурсы при закрытии сцены
      */
     shutdown(): void {
+        // Отписываемся от события resize
         this.scale.off('resize', this.onResize, this);
         
+        // Очищаем adaptiveDisplay
         if (this.adaptiveDisplay) {
             this.adaptiveDisplay.destroy();
         }

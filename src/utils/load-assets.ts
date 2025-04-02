@@ -8,9 +8,13 @@ interface AssetData {
 }
 
 const assetsData: Record<string, AssetData> = {
+    'chalkFont': {
+        type: 'bitmapFont',
+        params: ['/assets/fonts/chalk0.png', '/assets/fonts/chalk.xml']
+    },
     'background': {
         type: 'image',
-        params: ['/assets/bg.jpg'],
+        params: ['/assets/background.jpg'],
     },
     'heart': {
         type: 'image',

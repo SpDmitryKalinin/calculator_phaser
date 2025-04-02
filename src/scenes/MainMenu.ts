@@ -22,9 +22,12 @@ export class MainMenu extends Scene {
         this.updateLayout = this.updateLayout.bind(this);
     }
 
+
+
     create() {
         // Ожидаем стабилизации размера игры
         this.game.canvas.style.visibility = 'hidden';
+
 
         // Создаем адаптивный дисплей
         this.adaptiveDisplay = new AdaptiveDisplay({
@@ -34,18 +37,16 @@ export class MainMenu extends Scene {
             debug: false
         });
 
+
         // Создаем заголовок
-        this.title = this.add.localizedText(
-            180,
+        this.add.localizedBitmapText(
+            500,
             400,
-            '1 + 2 = 3',
-            {
-                fontSize: '48px',
-                fontFamily: 'Arial',
-                color: '#ffffff',
-                fontStyle: 'bold'
-            }
+            '1 + 2 = 3',       // translationKey
+            'chalkFont',  // font
+            50,
         ).setOrigin(0.5);
+        
 
 
         const buttonData = this.createButton(180, 400, 'play', () => {
@@ -101,13 +102,13 @@ export class MainMenu extends Scene {
         }
 
         // Обновляем позицию заголовка
-        if (this.title && this.title.active) {
-            this.adaptiveDisplay.placeAt(180, 100, this.title);
+        // if (this.title && this.title.active) {
+        //     this.adaptiveDisplay.placeAt(180, 100, this.title);
 
-            // Обновляем размер шрифта заголовка
-            const scale = this.adaptiveDisplay.getScaleX();
-            this.title.setFontSize(Math.floor(48 * scale) + 'px');
-        }
+        //     // Обновляем размер шрифта заголовка
+        //     const scale = this.adaptiveDisplay.getScaleX();
+        //     this.title.setFontSize(Math.floor(48 * scale) + 'px');
+        // }
 
         // Обновляем кнопку
         if (this.playButton && this.playButton.active && this.playButtonText && this.playButtonText.active) {
