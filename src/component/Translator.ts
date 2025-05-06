@@ -14,7 +14,10 @@ const resources = {
             rankGenius: "Genius",      
             rankMegamind: "Megamind",
             restart: 'Restart',
-            done: 'done'
+            done: 'done',
+            nextLevel: 'Next Level',
+            nextStage: 'Next Stage',
+            mainMenu: 'Main menu'
         }
     },
     ru: {
@@ -31,6 +34,9 @@ const resources = {
             rankMegamind: "Тупа мозг",
             restart: 'Сыграть снова',
             done: 'готово',
+            nextLevel: 'Следующий уровень',
+            nextStage: 'Следующий этап',
+            mainMenu: 'Главное меню'
         }
     },
     es: {
@@ -46,7 +52,10 @@ const resources = {
             rankGenius: "Genio",
             rankMegamind: "Supercerebro",
             restart: 'reanudar',
-            done: 'Hecho'
+            done: 'Hecho',
+            nextLevel: 'Siguiente nivel',
+            nextStage: 'Siguiente etapa',
+            mainMenu: 'Menú principal'
         }
     }
 };
@@ -105,5 +114,5 @@ class Translate {
     }
 }
 
-export const translator = new Translate('es');
+export const translator = new Translate('ru');
 

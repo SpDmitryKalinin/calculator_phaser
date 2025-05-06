@@ -4,360 +4,220 @@
 			"frame": {
 				"x": 1,
 				"y": 1,
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			},
 			"sourceSize": {
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			}
 		},
 		"dinamit_10.png": {
 			"frame": {
-				"x": 1471,
+				"x": 828,
 				"y": 1,
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			},
 			"sourceSize": {
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			}
 		},
 		"dinamit_11.png": {
 			"frame": {
-				"x": 2941,
+				"x": 1655,
 				"y": 1,
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			},
 			"sourceSize": {
-				"w": 1468,
-				"h": 737
-			}
-		},
-		"dinamit_12.png": {
-			"frame": {
-				"x": 1,
-				"y": 740,
-				"w": 1468,
-				"h": 737
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 1468,
-				"h": 737
-			},
-			"sourceSize": {
-				"w": 1468,
-				"h": 737
-			}
-		},
-		"dinamit_13.png": {
-			"frame": {
-				"x": 1471,
-				"y": 740,
-				"w": 1468,
-				"h": 737
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 1468,
-				"h": 737
-			},
-			"sourceSize": {
-				"w": 1468,
-				"h": 737
-			}
-		},
-		"dinamit_14.png": {
-			"frame": {
-				"x": 2941,
-				"y": 740,
-				"w": 1468,
-				"h": 737
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 1468,
-				"h": 737
-			},
-			"sourceSize": {
-				"w": 1468,
-				"h": 737
-			}
-		},
-		"dinamit_15.png": {
-			"frame": {
-				"x": 1,
-				"y": 1479,
-				"w": 1468,
-				"h": 737
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 1468,
-				"h": 737
-			},
-			"sourceSize": {
-				"w": 1468,
-				"h": 737
-			}
-		},
-		"dinamit_16.png": {
-			"frame": {
-				"x": 1471,
-				"y": 1479,
-				"w": 1468,
-				"h": 737
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 1468,
-				"h": 737
-			},
-			"sourceSize": {
-				"w": 1468,
-				"h": 737
-			}
-		},
-		"dinamit_17.png": {
-			"frame": {
-				"x": 2941,
-				"y": 1479,
-				"w": 1468,
-				"h": 737
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 1468,
-				"h": 737
-			},
-			"sourceSize": {
-				"w": 1468,
-				"h": 737
-			}
-		},
-		"dinamit_18.png": {
-			"frame": {
-				"x": 1,
-				"y": 2218,
-				"w": 1468,
-				"h": 737
-			},
-			"rotated": false,
-			"trimmed": false,
-			"spriteSourceSize": {
-				"x": 0,
-				"y": 0,
-				"w": 1468,
-				"h": 737
-			},
-			"sourceSize": {
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			}
 		},
 		"dinamit_2.png": {
 			"frame": {
-				"x": 1471,
-				"y": 2218,
-				"w": 1468,
-				"h": 737
+				"x": 2482,
+				"y": 1,
+				"w": 825,
+				"h": 1598
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			},
 			"sourceSize": {
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			}
 		},
 		"dinamit_3.png": {
 			"frame": {
-				"x": 2941,
-				"y": 2218,
-				"w": 1468,
-				"h": 737
+				"x": 1,
+				"y": 1601,
+				"w": 825,
+				"h": 1598
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			},
 			"sourceSize": {
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			}
 		},
 		"dinamit_4.png": {
 			"frame": {
-				"x": 1,
-				"y": 2957,
-				"w": 1468,
-				"h": 737
+				"x": 828,
+				"y": 1601,
+				"w": 825,
+				"h": 1598
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			},
 			"sourceSize": {
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			}
 		},
 		"dinamit_5.png": {
 			"frame": {
-				"x": 1471,
-				"y": 2957,
-				"w": 1468,
-				"h": 737
+				"x": 1655,
+				"y": 1601,
+				"w": 825,
+				"h": 1598
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			},
 			"sourceSize": {
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			}
 		},
 		"dinamit_6.png": {
 			"frame": {
-				"x": 2941,
-				"y": 2957,
-				"w": 1468,
-				"h": 737
+				"x": 2482,
+				"y": 1601,
+				"w": 825,
+				"h": 1598
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			},
 			"sourceSize": {
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			}
 		},
 		"dinamit_7.png": {
 			"frame": {
-				"x": 4411,
+				"x": 3309,
 				"y": 1,
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			},
 			"sourceSize": {
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			}
 		},
 		"dinamit_8.png": {
 			"frame": {
-				"x": 4411,
-				"y": 740,
-				"w": 1468,
-				"h": 737
+				"x": 3309,
+				"y": 1601,
+				"w": 825,
+				"h": 1598
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			},
 			"sourceSize": {
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			}
 		},
 		"dinamit_9.png": {
 			"frame": {
-				"x": 4411,
-				"y": 1479,
-				"w": 1468,
-				"h": 737
+				"x": 1,
+				"y": 3201,
+				"w": 825,
+				"h": 1598
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			},
 			"sourceSize": {
-				"w": 1468,
-				"h": 737
+				"w": 825,
+				"h": 1598
 			}
 		}
 	},
@@ -367,8 +227,8 @@
 		"image": "spritesheet.png",
 		"format": "RGBA8888",
 		"size": {
-			"w": 5880,
-			"h": 3695
+			"w": 4135,
+			"h": 4800
 		},
 		"scale": "1"
 	}

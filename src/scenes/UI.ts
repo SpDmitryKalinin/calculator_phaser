@@ -1,12 +1,12 @@
 import { GameObjects } from "phaser";
 import EventBus from "../constants/event-bus";
 import { EVENTS } from "../constants/event";
-import { AdaptiveDisplay } from "./AdaptiveDisplay";
+import { AdaptiveDisplay } from "../classes/utility/AdaptiveDisplay";
 
 export class UI extends Phaser.Scene {
     private counter: GameObjects.Text;
     private score: number = 0;
-    private hp: number = 3;
+    private hp: number = 6;
     private hearths: GameObjects.Sprite[] = [];
     private adaptiveDisplay: AdaptiveDisplay;
     
@@ -15,7 +15,7 @@ export class UI extends Phaser.Scene {
         scoreX: 350,         // X-координата счетчика очков
         scoreY: 10,          // Y-координата счетчика очков
         heartStartX: 10,     // Начальная X-координата для первого сердца
-        heartY: 15,          // Y-координата сердец
+        heartY: 20,          // Y-координата сердец
         heartSpacing: 50,    // Расстояние между сердцами
         heartSize: 60        // Базовый размер сердца
     };
@@ -30,7 +30,7 @@ export class UI extends Phaser.Scene {
     init() {
         // Сбрасываем все переменные при инициализации сцены
         this.score = 0;
-        this.hp = 3;
+        this.hp = 6;
         this.hearths = [];
         
         // Очищаем существующие обработчики событий, чтобы избежать дубликатов
@@ -41,7 +41,7 @@ export class UI extends Phaser.Scene {
         // Инициализируем адаптивный дисплей
         this.adaptiveDisplay = new AdaptiveDisplay({
             designWidth: 360,
-            designHeight: 800,
+            designHeight: 720,
             scene: this,
             debug: false
         });
@@ -151,6 +151,7 @@ export class UI extends Phaser.Scene {
 
     private addListeners() {
         EventBus.on(EVENTS.scoreChange, (points: number) => {
+            EventBus.emit(EVENTS.playFX, 'success', 0.1, 1.3);
             this.score += Math.floor(points);
             this.counter.setText(`${this.score}`);
             EventBus.emit(EVENTS.scoreChanged, this.score);
@@ -160,6 +161,7 @@ export class UI extends Phaser.Scene {
             if (this.hp <= 0) return;
             
             this.hp--;
+            EventBus.emit(EVENTS.playFX, 'lose', 0.1, 1.3);
             if (this.hp <= 0) {
                 EventBus.emit(EVENTS.gameOver);
                 return;

@@ -14,7 +14,7 @@ const assetsData: Record<string, AssetData> = {
     },
     'background': {
         type: 'image',
-        params: ['/assets/background.jpg'],
+        params: ['/assets/background/background.png'],
     },
     'heart': {
         type: 'image',
@@ -28,9 +28,9 @@ const assetsData: Record<string, AssetData> = {
         type: 'atlas',
         params: ['/assets/dinamit.png', '/assets/dinamit.json'],
     },
-    'tempbg': {
-        type: 'image',
-        params: ['/assets/bggg.png'],
+    'phetil': {
+        type: 'atlas',
+        params: ['/assets/ph.png', '/assets/ph.json'],
     },
     'progressBg':{
         type: 'image',
@@ -43,14 +43,67 @@ const assetsData: Record<string, AssetData> = {
     'progressBar': {
         type: 'image',
         params: ['/assets/progress_bar.png'],
+    },
+    'textureMask': {
+        type: 'image',
+        params: ['/assets/texture-mask.png']
+    },
+    'frame': {
+        type: 'image',
+        params: ['/assets/background/frame.png']
+    },
+    'noise': {
+        type: 'image',
+        params: ['/assets/noises/noise-linear.png']
+    },
+    'reward1': {
+        type: 'image',
+        params: ['/assets/rewards/reward1.webp']
+    },
+    'reward2': {
+        type: 'image',
+        params: ['/assets/rewards/reward2.webp']
+    },
+    'sound': {
+        type: 'image',
+        params: ['/assets/ui/sound.png']
     }
 };
 
 const soundData: Record<string, AssetData> = {
-    'music_menu': {
+    'click': {
         type: 'audio',
-        params: ['/assets/sound/F&D_music_menu.mp3'],
+        params: ['/assets/sfx/219145__reitanna__ratsneeze7.mp3'],
     },
+    'hover': {
+        type: 'audio',
+        params: ['/assets/sfx/219137__reitanna__ratsneeze2.mp3'],
+    },
+    'right_answer': {
+        type: 'audio',
+        params: ['/assets/sfx/219145__reitanna__ratsneeze7.mp3'],
+    },
+    'lose': {
+        type: 'audio',
+        params: ['/assets/sfx/241228__reitanna__pinkie-pie-evil-giggle.mp3'],
+    },
+    'success': {
+        type: 'audio',
+        params: ['/assets/sfx/323695__reitanna__clear-throat10.mp3'],
+    },
+    'reward': {
+        type: 'audio',
+        params: ['/assets/sfx/242902__reitanna__exasperated-growl.mp3'],
+    },
+    'boom': {
+        type: 'audio',
+        params: ['/assets/sfx/211976__qubodup__boom2.mp3'],
+    },
+    'time': {
+        type: 'audio',
+        params: ['/assets/sfx/401876__gcguest1__cameroon_at_ti_03_tom-tick.mp3'],
+    }
+    
 };
 
 export type AssetKey = keyof typeof assetsData | keyof typeof soundData;

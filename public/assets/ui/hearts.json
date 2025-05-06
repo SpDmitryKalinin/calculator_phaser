@@ -40,7 +40,7 @@
 				"h": 669
 			}
 		},
-		"hearts_3.png": {
+		"hearts_4.png": {
 			"frame": {
 				"x": 1004,
 				"y": 1,
@@ -60,7 +60,7 @@
 				"h": 669
 			}
 		},
-		"hearts_4.png": {
+		"hearts_5.png": {
 			"frame": {
 				"x": 1004,
 				"y": 672,
@@ -80,7 +80,7 @@
 				"h": 669
 			}
 		},
-		"hearts_5.png": {
+		"hearts_6.png": {
 			"frame": {
 				"x": 1,
 				"y": 1343,

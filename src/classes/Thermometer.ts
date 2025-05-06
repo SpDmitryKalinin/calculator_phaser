@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { AdaptiveDisplay } from '../scenes/AdaptiveDisplay';
+import { AdaptiveDisplay } from './utility/AdaptiveDisplay';
 
 export class Thermometer {
     private scene: Scene;
@@ -21,7 +21,7 @@ export class Thermometer {
     private create() {
         this.adaptiveDisplay = new AdaptiveDisplay({
             designWidth: 360,
-            designHeight: 800,
+            designHeight: 720,
             scene: this.scene,
             debug: false
         });

@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { AdaptiveDisplay } from './AdaptiveDisplay';
+import { AdaptiveDisplay } from '../classes/utility/AdaptiveDisplay';
 import { Thermometer } from '../classes/Thermometer';
 import { LocalizedText } from '../component/LocalizedText';
 
@@ -60,7 +60,7 @@ export class GameOver extends Scene {
         // Инициализируем адаптивный дисплей
         this.adaptiveDisplay = new AdaptiveDisplay({
             designWidth: 360,
-            designHeight: 800,
+            designHeight: 720,
             scene: this,
             debug: false
         });

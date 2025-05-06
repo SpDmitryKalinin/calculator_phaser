@@ -1,14 +1,15 @@
 import { GameObjects } from "phaser";
-import { AdaptiveDisplay } from "../scenes/AdaptiveDisplay";
+import { AdaptiveDisplay } from "./utility/AdaptiveDisplay";
 import EventBus from "../constants/event-bus";
+import { EVENTS } from "../constants/event";
 
 export class DynamiteTimer {
     scene: Phaser.Scene;
     
     designX: number;
     designY: number;
-    designWidth: number = 200; 
-    designHeight: number = 20;  
+    designWidth: number = 206; 
+    designHeight: number = 400;  
     
     realX: number;
     realY: number;
@@ -19,17 +20,21 @@ export class DynamiteTimer {
     timeStarted: number;
     timerEvent: Phaser.Time.TimerEvent | null = null;
     onTimeOut: Function;
+    fuse: GameObjects.Sprite;
     dinamit: GameObjects.Sprite;
+    currentAnim: string | null = null;
+    isInflating: boolean = true;
+    shouldTriggerTimeout: boolean = false;
+    forceLastAnim = false;
+    container: Phaser.GameObjects.Container; // Fixed typo from 'conainer'
 
     private adaptiveDisplay: AdaptiveDisplay | null = null;
-    private currentAnimation: string = ''; // Track current animation
+    maxFrames: 12;
     
     constructor(
         scene: Phaser.Scene, 
         x: number, 
         y: number, 
-        width?: number, 
-        height?: number, 
         adaptiveDisplay?: AdaptiveDisplay,
         maxTime?: number
     ) {
@@ -37,8 +42,6 @@ export class DynamiteTimer {
         // Сохраняем дизайнерские координаты и размеры
         this.designX = x;
         this.designY = y;
-        if (width) this.designWidth = width;
-        if (height) this.designHeight = height;
         if (maxTime) this.maxTime = maxTime;
         
         // Если передан adaptiveDisplay, используем его
@@ -87,178 +90,169 @@ export class DynamiteTimer {
         // Обновляем реальные размеры и координаты
         this.updateRealDimensions();
         
-        // Обновляем положение и размер динамита
-        this.updateDinamit();
+        // Обновляем положение и размер контейнера
+        this.updateContainer();
     }
     
     init() {
-
         this.createAnimations();
-        this.createDinamit();
+        this.createElements();
         this.addListeners();
     }
 
     addListeners() {
         EventBus.on('getDamage', () => {
             this.stop();
-            this.playDinamitAnimation('boom');
-        })
+        });
     }
 
-    createDinamit() {
-        if(this.adaptiveDisplay === null) {
+    createElements() {
+        if (this.adaptiveDisplay === null) {
             return;
         }
         const scale = this.adaptiveDisplay.getScaleX();
+        
+        // Создаем контейнер в начальной позиции
+        this.container = this.scene.add.container(this.realX, this.realY);
+        
+        // Создаем спрайты внутри контейнера
         this.dinamit = this.scene.add.sprite(0, 0, 'dinamit');
-        this.dinamit.setOrigin(0.5, 0);
-        this.adaptiveDisplay?.placeAt(this.designX, this.designY, this.dinamit);
+        this.dinamit.setOrigin(0, 0);
         this.dinamit.setDisplaySize(this.designWidth * scale, this.designHeight * scale);
         
+        this.fuse = this.scene.add.sprite(0, 0, 'phetil');
+        this.fuse.setOrigin(0, 0);
+        this.fuse.setDisplaySize(this.designWidth * scale, this.designHeight * scale);
+
         
-        this.dinamit.on('animationcomplete-boom', this.onBoomComplete, this);
-        this.dinamit.on('animationupdate', (animation: any, frame:any) => {
-            if(animation.key === 'boom') {
-                this.onBoomUpdate(frame)
-            }
-            
-        })
+        // Добавляем спрайты в контейнер
+        this.container.add([this.dinamit, this.fuse]);
+        this.container.setAlpha(0.3)
+        this.container.setRotation(Math.PI / 3);
         
-        // Start with the first animation
-        this.playDinamitAnimation('dinamit-1');
+        // Обновляем позицию контейнера с помощью AdaptiveDisplay
+        this.updateContainer();
     }
 
-    updateDinamit() {
-        if(this.adaptiveDisplay === null) {
+    updateContainer() {
+        if (this.adaptiveDisplay === null) {
             return;
         }
+        
         const scale = this.adaptiveDisplay.getScaleX();
-        this.adaptiveDisplay?.placeAt(this.designX, this.designY, this.dinamit);
+        
+        // Обновляем размеры спрайтов
         this.dinamit.setDisplaySize(this.designWidth * scale, this.designHeight * scale);
+        this.fuse.setDisplaySize(this.designWidth * scale, this.designHeight * scale);
+        
+        // Получаем реальные координаты для контейнера
+        const realPos = this.adaptiveDisplay.toScreenPoint({
+            x: this.designX,
+            y: this.designY
+        });
+        
+        // Обновляем позицию контейнера
+        this.container.setPosition(realPos.x, realPos.y);
     }
 
     createAnimations() {
+        // Быстрые анимации надувания
         this.scene.anims.create({
-            key: 'dinamit-1',
+            key: 'dinamit-inflate-1',
             frames: this.scene.anims.generateFrameNames('dinamit', {
-                start: 2,
-                end: 3,
-                prefix: `dinamit_`,
-                suffix: '.png',
-            }),
-            frameRate: 12,
-            repeat: -1,
-        });
-
-        this.scene.anims.create({
-            key: 'dinamit-2',
-            frames: this.scene.anims.generateFrameNames('dinamit', {
-                start: 4,
+                start: 1,
                 end: 5,
-                prefix: `dinamit_`,
-                suffix: '.png',
+                prefix: 'dinamit_',
+                suffix: '.png'
             }),
-            frameRate: 12,
-            repeat: -1,
+            frameRate: 16, 
+            repeat: 0,
         });
 
+        // Остальные анимации без изменений...
         this.scene.anims.create({
-            key: 'dinamit-3',
+            key: 'dinamit-inflate-2',
             frames: this.scene.anims.generateFrameNames('dinamit', {
-                start: 6,
+                start: 1,
                 end: 7,
-                prefix: `dinamit_`,
-                suffix: '.png',
+                prefix: 'dinamit_',
+                suffix: '.png'
             }),
-            frameRate: 12,
-            repeat: -1,
+            frameRate: 16, 
+            repeat: 0,
         });
 
         this.scene.anims.create({
-            key: 'dinamit-4',
+            key: 'dinamit-inflate-3',
             frames: this.scene.anims.generateFrameNames('dinamit', {
-                start: 8,
-                end: 9,
-                prefix: `dinamit_`,
-                suffix: '.png',
-            }),
-            frameRate: 12,
-            repeat: -1,
-        });
-
-        this.scene.anims.create({
-            key: 'dinamit-5',
-            frames: this.scene.anims.generateFrameNames('dinamit', {
-                start: 10,
+                start: 1,
                 end: 11,
-                prefix: `dinamit_`,
-                suffix: '.png',
+                prefix: 'dinamit_',
+                suffix: '.png'
             }),
-            frameRate: 12,
-            repeat: -1,
+            frameRate: 16,
+            repeat: 0,
+        });
+
+        // Медленные анимации сдувания
+        this.scene.anims.create({
+            key: 'dinamit-deflate-1',
+            frames: this.scene.anims.generateFrameNames('dinamit', {
+                start: 5,
+                end: 1,
+                prefix: 'dinamit_',
+                suffix: '.png'
+            }),
+            frameRate: 8, 
+            repeat: 0,
         });
 
         this.scene.anims.create({
-            key: 'boom',
+            key: 'dinamit-deflate-2',
             frames: this.scene.anims.generateFrameNames('dinamit', {
-                start: 12,
-                end: 18,
-                prefix: `dinamit_`,
-                suffix: '.png',
+                start: 7,
+                end: 1,
+                prefix: 'dinamit_',
+                suffix: '.png'
             }),
-            frameRate: 10,
-            repeat: 0
+            frameRate: 8, 
+            repeat: 0,
+        });
+
+        this.scene.anims.create({
+            key: 'dinamit-deflate-3',
+            frames: this.scene.anims.generateFrameNames('dinamit', {
+                start: 11,
+                end: 1,
+                prefix: 'dinamit_',
+                suffix: '.png'
+            }),
+            frameRate: 8, 
+            repeat: 0,
         });
     }
-    
-    // Играть определенную анимацию динамита, только если она отличается от текущей
-    playDinamitAnimation(animationKey: string) {
-        if (this.currentAnimation !== animationKey) {
-            this.dinamit.play(animationKey);
-            this.currentAnimation = animationKey;
-        }
-    }
-    
-    // Обработчик завершения анимации взрыва
-    onBoomComplete() {
-        // Когда анимация взрыва завершена, вызываем callback для обработки окончания времени
-        if (this.onTimeOut) {
-            // Добавляем небольшую задержку, чтобы взрыв был хорошо виден
-            this.scene.time.delayedCall(300, () => {
-                this.onTimeOut();
-            });
-        }
-    }
-
-    onBoomUpdate(frame: Phaser.Animations.AnimationFrame) {
-        if (frame.index === 4) {
-            this.scene.cameras.main.shake(200, 0.02);
-        }
-    }
-
     
     // Установка коллбэка на окончание времени
     setTimeOutCallback(callback: Function) {
+        this.currentAnim = null;
+
         this.onTimeOut = callback;
     }
     
+    // Остальные методы без изменений...
     // Запуск таймера
     start() {
-        // Если предыдущий таймер был запущен, останавливаем его
         this.stop();
         
         this.timeStarted = Date.now();
+        this.shouldTriggerTimeout = false;
         
-        // Создаем новый таймер, обновляющий динамит каждые 100мс
         this.timerEvent = this.scene.time.addEvent({
             delay: 100,
             callback: this.updateTimer,
             callbackScope: this,
             loop: true
         });
-        
-        // Начинаем с первой анимации
-        this.playDinamitAnimation('dinamit-1');
     }
     
     // Остановка таймера
@@ -274,39 +268,30 @@ export class DynamiteTimer {
         const elapsed = Date.now() - this.timeStarted;
         const remaining = this.maxTime - elapsed;
         
-        if (remaining <= 0) {
+        if (remaining <= 0 && this.shouldTriggerTimeout) {
+            this.scene.cameras.main.shake(100)
+            EventBus.emit(EVENTS.playFX, 'boom', 1, 1.3);
+            this.currentAnim = null;
             this.stop();
-            this.playDinamitAnimation('boom');
-            
+            this.onTimeOut()
             return;
         }
         
         // Вычисляем процент оставшегося времени
         const percent = remaining / this.maxTime;
-        
-        // Обновляем анимацию динамита в зависимости от оставшегося времени
-        if (percent > 0.8 && percent <= 1) {
-            this.playDinamitAnimation('dinamit-1');
-        } else if (percent > 0.6 && percent <= 0.8) {
-            this.playDinamitAnimation('dinamit-2');
-        } else if (percent > 0.4 && percent <= 0.6) {
-            this.playDinamitAnimation('dinamit-3');
-        } else if (percent > 0.2 && percent <= 0.4) {
-            this.playDinamitAnimation('dinamit-4');
-        } else if (percent <= 0.2) {
-            this.playDinamitAnimation('dinamit-5');
-        }
+        const frameIndex = Math.floor((1 - percent) * 12);
+        const clampedFrameIndex = Math.min(11, Math.max(0, frameIndex) + 1);
+        this.dinamitAnimController(percent);
+        this.fuse.setFrame(`ph${clampedFrameIndex}.png`);
     }
     
-    // Изменение времени таймера
     setTime(milliseconds: number) {
         this.maxTime = milliseconds;
+        this.currentAnim = null;
     }
     
-    // Добавление времени к таймеру (для бонусов)
     addTime(milliseconds: number) {
         if (this.timerEvent) {
-            // Если таймер активен, просто обновляем время начала
             const elapsed = Date.now() - this.timeStarted;
             const newElapsed = Math.max(0, elapsed - milliseconds);
             this.timeStarted = Date.now() - newElapsed;
@@ -316,7 +301,6 @@ export class DynamiteTimer {
     // Сброс таймера (но не запуск)
     reset() {
         this.stop();
-        this.playDinamitAnimation('dinamit-1');
     }
     
     // Пауза таймера
@@ -351,9 +335,69 @@ export class DynamiteTimer {
             this.scene.scale.off('resize', this.onResize, this);
         }
         
-        if (this.dinamit) {
-            this.dinamit.off('animationcomplete-boom', this.onBoomComplete, this);
-            this.dinamit.destroy();
+        // Уничтожаем контейнер и все его содержимое
+        if (this.container) {
+            this.container.destroy();
+        }
+    }
+
+    dinamitAnimController(percent: number) {
+        // Логика анимации без изменений
+        const progressPercent = 1 - percent;
+        if(this.currentAnim === null) {
+            this.dinamit.play('dinamit-inflate-1');
+            this.currentAnim = 'dinamit-inflate-1'
+        }
+
+        if(progressPercent > 1 && this.dinamit.anims.getProgress() === 1 && this.currentAnim === 'dinamit-inflate-3') {
+            this.dinamit.stop();
+            this.shouldTriggerTimeout = true;
+            this.forceLastAnim = false;
+            return
+        }
+        
+        if(progressPercent < 0.33 && this.dinamit.anims.getProgress() === 1 && this.currentAnim === 'dinamit-deflate-1') {
+            this.dinamit.play('dinamit-inflate-1');
+            this.currentAnim = 'dinamit-inflate-1'
+        }
+
+        if(this.dinamit.anims.getProgress() === 1 && this.currentAnim === 'dinamit-inflate-1') {
+            this.dinamit.play('dinamit-deflate-1');
+            this.currentAnim = 'dinamit-deflate-1'
+        }
+
+        if(progressPercent < 0.66 && this.dinamit.anims.getProgress() === 1 && this.currentAnim === 'dinamit-deflate-1') {
+            this.dinamit.play('dinamit-inflate-2')
+            this.currentAnim = 'dinamit-inflate-2'
+        }
+
+        if(this.dinamit.anims.getProgress() === 1 && this.currentAnim === 'dinamit-inflate-2') {
+            this.dinamit.play('dinamit-deflate-2');
+            this.currentAnim = 'dinamit-deflate-2'
+            if(Phaser.Math.RND.realInRange(0, 1) < 0.2) {
+                EventBus.emit(EVENTS.playFX, 'time', 1, 1.3);
+            }
+        }
+
+        if(progressPercent < 0.66 && this.dinamit.anims.getProgress() === 1 && this.currentAnim === 'dinamit-deflate-2') {
+            this.dinamit.play('dinamit-inflate-2')
+            this.currentAnim = 'dinamit-inflate-2'
+        }
+
+        if((progressPercent < 1 || (progressPercent > 1 && !this.forceLastAnim)) && this.dinamit.anims.getProgress() === 1 && (this.currentAnim === 'dinamit-deflate-2' || this.currentAnim === 'dinamit-deflate-1')) {
+            this.forceLastAnim = true
+            this.dinamit.play('dinamit-inflate-3')
+            this.currentAnim = 'dinamit-inflate-3'
+        }
+
+        if(this.dinamit.anims.getProgress() === 1 && this.currentAnim === 'dinamit-inflate-3') {
+            this.dinamit.play('dinamit-deflate-3');
+            this.currentAnim = 'dinamit-deflate-3'
+        }
+
+        if(this.dinamit.anims.getProgress() === 1 && this.currentAnim === 'dinamit-deflate-3') {
+            this.dinamit.play('dinamit-inflate-3')
+            this.currentAnim = 'dinamit-inflate-3'
         }
     }
 }

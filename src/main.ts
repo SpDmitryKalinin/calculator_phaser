@@ -11,6 +11,9 @@ import './component/LocalizedText';
 import './component/LocalizedBitmap';
 
 import { Game, Types } from "phaser";
+import { RewardScreen } from './scenes/RewardScreen';
+import RevealImage from './classes/utility/RevealImage';
+import { Settings } from './scenes/Settings';
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
 
@@ -25,6 +28,8 @@ const config: Types.Core.GameConfig = {
         height: window.innerHeight,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
+    // @ts-expect-error
+    pipeline: { RevealImage },
     // Убрано дублирование parent, так как оно уже указано в scale
     scene: [
         Boot,
@@ -33,7 +38,9 @@ const config: Types.Core.GameConfig = {
         MainMenu,
         MainGame,
         GameOver,
-        UI
+        UI,
+        RewardScreen,
+        Settings
     ]
 };
 

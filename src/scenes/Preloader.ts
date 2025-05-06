@@ -1,15 +1,19 @@
 import { Scene } from 'phaser';
-import { AdaptiveDisplay } from './AdaptiveDisplay';
+import { AdaptiveDisplay } from '../classes/utility/AdaptiveDisplay';
 import loadAssets, { AssetKey } from '../utils/load-assets';
-import { LocalizedText } from '../component/LocalizedText';
+import { LocalizedBitmapText } from '../component/LocalizedBitmap';
 
 export class Preloader extends Scene {
     private adaptiveDisplay: AdaptiveDisplay;
     private spinner: Phaser.GameObjects.Container;
     private spinnerCircle: Phaser.GameObjects.Arc;
     private spinnerDot: Phaser.GameObjects.Arc;
-    private loadingText: LocalizedText;
+    private loadingText: LocalizedBitmapText;
     private spinnerTween: Phaser.Tweens.Tween;
+    
+    // Новые свойства для маски
+    private spinnerMask: Phaser.GameObjects.Image;
+    private spinnerMaskObject: Phaser.Display.Masks.BitmapMask;
     
     constructor() {
         super('Preloader');
@@ -19,7 +23,7 @@ export class Preloader extends Scene {
         // Инициализируем адаптивный дисплей
         this.adaptiveDisplay = new AdaptiveDisplay({
             designWidth: 360,
-            designHeight: 800,
+            designHeight: 720,
             scene: this,
             debug: false
         });
@@ -41,10 +45,23 @@ export class Preloader extends Scene {
             'background',
             'hearts',
             'dinamit',
+            'phetil',
             'music_menu',
             'progressBg',
             'progressMask',
-            'progressBar'
+            'progressBar',
+            'textureMask',
+            'noise',
+            'reward1',
+            'reward2',
+            'sound',
+            'click',
+            'hover',
+            'lose',
+            'success',
+            'reward',
+            'boom',
+            'time'
         ];
         
         // Загружаем ассеты через утилиту loadAssets
@@ -55,6 +72,7 @@ export class Preloader extends Scene {
         // Задержка перед переходом к следующей сцене
         this.time.delayedCall(1500, () => {
             this.scene.start('MainMenu');
+            this.scene.start('settings')
         });
     }
     
@@ -63,7 +81,7 @@ export class Preloader extends Scene {
      */
     private createSimpleSpinner() {
         this.spinner = this.add.container(0, 0);
-        this.adaptiveDisplay.placeAt(330, 750, this.spinner);
+        this.adaptiveDisplay.placeAt(340, 640, this.spinner);
         
         const scale = this.adaptiveDisplay.getScaleX();
         const spinnerSize = 20 * scale;
@@ -80,17 +98,14 @@ export class Preloader extends Scene {
         this.spinner.add(this.spinnerDot);
         
         // Создаем текст загрузки в центре экрана
-        this.loadingText = this.add.localizedText(
+        this.loadingText = this.add.localizedBitmapText(
             0, 0,
             'load',
-            {
-                fontSize: `${Math.floor(24 * scale)}px`, // Увеличиваем размер текста для центра
-                fontFamily: 'Arial',
-                color: '#ffffff'
-            }
+            'chalkFont',
+            50
         ).setOrigin(0.5);
         
-        this.adaptiveDisplay.placeAt(180, 400, this.loadingText);
+        this.adaptiveDisplay.placeAt(180, 360, this.loadingText);
         
         // Создаем анимацию вращения
         this.spinnerTween = this.tweens.add({
@@ -100,6 +115,27 @@ export class Preloader extends Scene {
             repeat: -1,
             ease: 'Linear'
         });
+        
+        // Создаем маску для спиннера (аналогично как в классе Button)
+        this.spinnerMask = this.make.image({
+            x: 0,
+            y: 0,
+            key: 'textureMask',
+            add: false
+        });
+        
+        // Позиционируем маску там же, где и спиннер
+        this.adaptiveDisplay.placeAt(340, 640, this.spinnerMask);
+        
+        // Устанавливаем размер маски в соответствии с размером спиннера
+        const maskSize = spinnerSize * 2.5; // Делаем маску немного больше спиннера
+        this.spinnerMask.setDisplaySize(maskSize, maskSize);
+        
+        // Создаем объект маски из изображения
+        this.spinnerMaskObject = this.spinnerMask.createBitmapMask();
+        
+        // Применяем маску к контейнеру спиннера
+        this.spinner.setMask(this.spinnerMaskObject);
     }
     
     /**
@@ -151,7 +187,7 @@ export class Preloader extends Scene {
         
         // Обновляем позицию спиннера (правый нижний угол)
         if (this.spinner && this.spinner.active) {
-            this.adaptiveDisplay.placeAt(320, 750, this.spinner);
+            this.adaptiveDisplay.placeAt(340, 640, this.spinner);
             
             // Обновляем размеры спиннера
             const spinnerSize = 20 * scale;
@@ -165,12 +201,21 @@ export class Preloader extends Scene {
                 this.spinnerDot.setPosition(spinnerSize - 4 * scale, 0);
                 this.spinnerDot.setRadius(4 * scale);
             }
+            
+            // Обновляем маску спиннера
+            if (this.spinnerMask && this.spinnerMask.active) {
+                this.adaptiveDisplay.placeAt(340, 640, this.spinnerMask);
+                
+                // Обновляем размер маски
+                const maskSize = spinnerSize * 2.5; // Чуть больше спиннера
+                this.spinnerMask.setDisplaySize(maskSize, maskSize);
+            }
         }
         
         // Обновляем текст загрузки (в центре экрана)
         if (this.loadingText && this.loadingText.active) {
-            this.adaptiveDisplay.placeAt(180, 400, this.loadingText);
-            this.loadingText.setFontSize(`${Math.floor(24 * scale)}px`);
+            this.adaptiveDisplay.placeAt(180, 360, this.loadingText);
+            this.loadingText.setFontSize(Math.floor(50 * scale));
         }
     }
     
@@ -186,6 +231,15 @@ export class Preloader extends Scene {
         // Останавливаем анимацию
         if (this.spinnerTween && this.spinnerTween.isPlaying()) {
             this.spinnerTween.stop();
+        }
+        
+        // Очищаем маску
+        if (this.spinnerMaskObject) {
+            this.spinnerMaskObject.destroy();
+        }
+        
+        if (this.spinnerMask) {
+            this.spinnerMask.destroy();
         }
         
         // Очищаем адаптивный дисплей

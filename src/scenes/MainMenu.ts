@@ -1,18 +1,20 @@
 import { Scene, GameObjects } from 'phaser';
-import { AdaptiveDisplay } from './AdaptiveDisplay';
-import { translator } from '../component/Translator';
+import { AdaptiveDisplay } from '../classes/utility/AdaptiveDisplay';
+
+import { Button } from '../classes/Button';
+import { Languages } from '../classes/Languages';
 
 export class MainMenu extends Scene {
     background: GameObjects.Image;
     logo: GameObjects.Image;
-    title: GameObjects.Text | null;
+    title: GameObjects.BitmapText | null;
+    languages: Languages
+    
 
-
-    private adaptiveDisplay: AdaptiveDisplay | null;;
+    private adaptiveDisplay: AdaptiveDisplay | null;
 
     // UI элементы
-    private playButton: GameObjects.Rectangle | null;;
-    private playButtonText: GameObjects.Text | null;;
+    private playButton: Button | null;
     private initialLayoutComplete: boolean = false;
 
     constructor() {
@@ -22,47 +24,42 @@ export class MainMenu extends Scene {
         this.updateLayout = this.updateLayout.bind(this);
     }
 
-
-
     create() {
         // Ожидаем стабилизации размера игры
         this.game.canvas.style.visibility = 'hidden';
 
-
         // Создаем адаптивный дисплей
         this.adaptiveDisplay = new AdaptiveDisplay({
             designWidth: 360,
-            designHeight: 800,
+            designHeight: 720,
             scene: this,
             debug: false
         });
 
-
         // Создаем заголовок
-        this.add.localizedBitmapText(
+        this.title = this.add.localizedBitmapText(
             500,
             400,
-            '1 + 2 = 3',       // translationKey
-            'chalkFont',  // font
+            '1 + 2 = 3',
+            'chalkFont',
             50,
         ).setOrigin(0.5);
         
-
-
-        const buttonData = this.createButton(180, 400, 'play', () => {
-            this.scale.off('resize', this.updateLayout, this);
-            this.scene.start('Game');
+        // Создаем кнопку с помощью нового компонента
+        this.playButton = new Button({
+            scene: this,
+            x: 180,
+            y: 250,
+            text: 'play',
+            callback: () => {
+                this.scale.off('resize', this.updateLayout, this);
+                this.scene.start('Game');
+            },
+            adaptiveDisplay: this.adaptiveDisplay
         });
 
-        this.playButton = buttonData.button;
-        this.playButtonText = buttonData.buttonText;
-
-        // Отложенное обновление макета для гарантии правильного первого рендера
         this.time.delayedCall(50, () => {
-            // Обновляем layout дважды для гарантии
             this.updateLayout();
-
-            // Небольшая задержка для второго обновления
             this.time.delayedCall(50, () => {
                 this.updateLayout();
                 this.game.canvas.style.visibility = 'visible';
@@ -77,13 +74,7 @@ export class MainMenu extends Scene {
         this.events.once('shutdown', this.shutdown, this);
         this.events.once('destroy', this.destroy, this);
 
-        const enButton = this.add.text(700, 20, 'EN', { fontSize: '20px' }).setInteractive();
-        const ruButton = this.add.text(700, 50, 'RU', { fontSize: '20px' }).setInteractive();
-        const esButton = this.add.text(700, 80, 'ES', { fontSize: '20px' }).setInteractive();
-
-        enButton.on('pointerdown', () => translator.changeLang('en'));
-        ruButton.on('pointerdown', () => translator.changeLang('ru'));
-        esButton.on('pointerdown', () => translator.changeLang('es'));
+        this.languages = new Languages(this, 200, 32)
     }
 
     /**
@@ -95,6 +86,7 @@ export class MainMenu extends Scene {
 
         // Проверяем, что адаптивный дисплей существует
         if (!this.adaptiveDisplay) return;
+        const scale = this.adaptiveDisplay.getScaleX();
 
         // Принудительное обновление масштаба для первого рендера
         if (!this.initialLayoutComplete) {
@@ -102,51 +94,21 @@ export class MainMenu extends Scene {
         }
 
         // Обновляем позицию заголовка
-        // if (this.title && this.title.active) {
-        //     this.adaptiveDisplay.placeAt(180, 100, this.title);
+        if (this.title && this.title.active) {
+            this.adaptiveDisplay.placeAt(180, 120, this.title);
 
-        //     // Обновляем размер шрифта заголовка
-        //     const scale = this.adaptiveDisplay.getScaleX();
-        //     this.title.setFontSize(Math.floor(48 * scale) + 'px');
-        // }
-
-        // Обновляем кнопку
-        if (this.playButton && this.playButton.active && this.playButtonText && this.playButtonText.active) {
-            this.adaptiveDisplay.placeAt(180, 250, this.playButton);
-            this.adaptiveDisplay.placeAt(180, 250, this.playButtonText);
-
-            // Обновляем размер кнопки
-            const scaleX = this.adaptiveDisplay.getScaleX();
-            const scaleY = this.adaptiveDisplay.getScaleY();
-            this.playButton.setSize(240 * scaleX, 60 * scaleY);
-
-            // Обновляем размер шрифта кнопки
-            this.playButtonText.setFontSize(Math.floor(28 * scaleX) + 'px');
+            // Обновляем размер шрифта заголовка
+            
+            this.title.setFontSize(Math.floor(48 * scale));
         }
-    }
+        
 
-    /**
-     * Создает интерактивную кнопку
-     */
-    createButton(x: number, y: number, text: string, callback: Function) {
-        // Фон кнопки
-        const button = this.add.rectangle(x, y, 240, 60,)
-            .setOrigin(0.5)
-            .setInteractive()
-            .setStrokeStyle(2, 0xffffff);
+        // Обновляем кнопку через метод компонента
+        if (this.playButton) {
+            this.playButton.updateLayout();
+        }
 
-        // Текст кнопки
-        const buttonText = this.add.localizedText(x, y, text, {
-            fontSize: '28px',
-            fontFamily: 'Arial',
-            color: '#ffffff'
-        }).setOrigin(0.5);
-
-        button.on('pointerdown', () => {
-            callback();
-        });
-
-        return { button, buttonText };
+        this.languages.updateLayout();
     }
 
     /**
@@ -161,15 +123,10 @@ export class MainMenu extends Scene {
             this.adaptiveDisplay = null; // Явно обнуляем ссылку
         }
 
-        // Удаляем обработчики событий кнопки
+        // Уничтожаем компонент кнопки
         if (this.playButton) {
-            this.playButton.removeAllListeners();
-            this.playButton = null; // Явно обнуляем ссылку
-        }
-
-        // Обнуляем ссылку на текст кнопки
-        if (this.playButtonText) {
-            this.playButtonText = null;
+            this.playButton.destroy();
+            this.playButton = null;
         }
 
         // Обнуляем ссылку на заголовок
