@@ -8,16 +8,20 @@ class Store {
     config: LevelConfig[];
     stickerProgress = 0;
     isSound: boolean = true;
-    counterCurrentTime: number = 0;
+    
     counterTimeout: number = 0;
     counterDivider: number = 0;
     counterMultiply: number = 0;
+    counterPower: number = 0;
     counterCurrentTimeout: number = 0;
     counterCurrentDivider: number = 0;
     counterCurrentMultiply: number = 0;
+    counterCurrentPower: number = 0;
+    counterCurrentTime: number = 0;
     dividerCoeff: number = 1;
     multiplyCoeff: number = 1;
     timeCoeff: number = 0;
+    powerCoeff: number = 1;
 
 
 
@@ -94,6 +98,31 @@ class Store {
 
     resetDividerCoeff() {
         this.dividerCoeff = 1;
+    }
+
+    setCounterWrongPower() {
+        this.counterPower = this.counterPower + 1;
+        this.counterCurrentPower = 0;
+        if(this.counterPower === 3) {
+            this.counterPower = 0;
+            this.powerCoeff = this.powerCoeff * 0.5;
+        }
+    }
+
+    setCounterCurrentPower() {
+        this.counterCurrentPower = this.counterCurrentPower + 1;
+        if(this.counterCurrentPower === 3) {
+            this.resetCounterWrongPower();
+            this.resetPowerCoeff();
+        }
+    }
+
+    resetCounterWrongPower() {
+        this.counterPower = 0;
+    }
+
+    resetPowerCoeff() {
+        this.powerCoeff = 1;
     }
 
     setCounterWrongMultiply() {

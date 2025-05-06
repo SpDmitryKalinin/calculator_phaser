@@ -133,6 +133,7 @@ export class GameController {
         this.example.setText(string);
         if(power === null) {
             this.examplePowerString.setAlpha(0);
+            this.examplePowerString.setText('null');
         }
         else {
             this.examplePowerString.setText(String(power))
@@ -162,6 +163,9 @@ export class GameController {
             if(this.example.text.includes('/')) {
                 store.setCounterCurrentDivider();
             }
+            if(!this.examplePowerString.text.includes('null')) {
+                store.setCounterCurrentPower();
+            }
             store.setCounterCurrentTime();
             EventBus.emit(EVENTS.scoreChange, 100 * Number(timeMultiple));
             this.timeBar.stop();
@@ -174,6 +178,10 @@ export class GameController {
             }
             if(this.example.text.includes('/')) {
                 store.setCounterWrongDivider();
+            }
+            if(!this.examplePowerString.text.includes('null')) {
+                store.setCounterWrongPower();
+                console.log('wrong power')
             }
             store.resetCounterCurrentTime();
             EventBus.emit(EVENTS.getDamage);

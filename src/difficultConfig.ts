@@ -42,7 +42,7 @@ export const difficultConfig: LevelConfig[] = [
                 time: 10000,
                 probabiliyBigValue: 0.5,
                 probabiliyBigValueArray: [1, 0.1, 0.1, 1],
-                probabilityPower: 0,
+                probabilityPower: 1,
                 buttonCount: 4,
 
                 exampleLengthConfig: [

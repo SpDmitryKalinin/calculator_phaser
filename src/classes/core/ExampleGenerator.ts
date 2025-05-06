@@ -16,8 +16,8 @@ export class ExampleGenerator {
         let hasMultiplication = false;
         let hasDivider = false;
         let hadBigNumberBeforeMultiply = false;
-        
-        if(Math.random() < this.config.probabilityPower) {
+        console.log(this.config.probabilityPower * store.powerCoeff)
+        if(Math.random() < this.config.probabilityPower * store.powerCoeff) {
             return this.createPowerExample();
         }
 
